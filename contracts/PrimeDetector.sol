@@ -17,6 +17,7 @@ contract PrimeDetector is Ownable {
 
     function generatePrimeNumberCandidate(uint input) external payable onlyOwner {
         require(msg.value >= minimum_stake, 'Stake provided is not high enough');
+        require(input != 1 && input != 2, 'trivially prime numbers provided');
         commitments.push(
             Commitment({
                 input: input,
@@ -33,6 +34,8 @@ contract PrimeDetector is Ownable {
         
         require(commitment.valid == true, 'No valid data to challenge');
 
+        // Assumes that 1 and 2 are not valid commitment.input
+        require(factor1 != 1 && factor2 != 1, '1 cannot be used as a factor to detect primality');
         require(factor1 * factor2 == commitment.input, 'Incorrect factors');
         
 
